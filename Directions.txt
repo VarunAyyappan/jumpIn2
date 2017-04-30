@@ -1,0 +1,4 @@
+Use the A key on the keyboard to move your character left.
+Use the D Key to move your character right.
+Use the W key to have your character jump.
+Input your answer to the question in the input given near the bottom of the screen.

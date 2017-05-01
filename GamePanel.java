@@ -141,15 +141,25 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Act
 			frogX+=vx;
 		else if(code==e.VK_W)
 		{
+			// Testing jump, not working properly as of right now...
+			
 			for(int num=0; num<150; num++)
 			{
 				frogX++;
-				if(num%10==0)setFrogY(getFrogY() - 25);
+
+				if(num%10==0)
+					frogY-=25;
+
+				repaint();
 			}
 			for(int num=150; num>0; num--)
 			{
 				frogX++;
-				if(num%10==0)setFrogY(getFrogY() + 25);
+
+				if(num%10==0)
+					frogY+=25;
+
+				repaint();
 			}
 		}
 		else if(code==e.VK_P)
@@ -158,8 +168,10 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Act
 	public void keyTyped(KeyEvent e) {}
 	public void keyReleased(KeyEvent e) {}
 
-	// MouseListener methods
-	public void mousePressed(MouseEvent e) {
+	// MouseListener methods 
+	// Trying to use this for focus switch, not working right now...
+	public void mousePressed(MouseEvent e) 
+	{
        requestFocusInWindow();
     }
 

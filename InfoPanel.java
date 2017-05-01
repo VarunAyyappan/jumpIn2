@@ -10,7 +10,7 @@
  * the input for the math problems.
  * 
  * Testing:
- * Should Work: 
+ * Should Work: Text input via JTextField
  * Shouldn't Work: Anything else
  */
 
@@ -61,13 +61,11 @@ public class InfoPanel extends JPanel implements MouseListener, ActionListener
 	}
 
 	// MouseListener methods
-	public void mousePressed(MouseEvent e) {
-       requestFocusInWindow();
-    }
-
+	// Trying to use this for focus switch, not working right now...
+	public void mousePressed(MouseEvent e) { }
     public void mouseReleased(MouseEvent e) {}
     public void mouseEntered(MouseEvent e) {}
-    public void mouseExited(MouseEvent e) { }
+    public void mouseExited(MouseEvent e) {}
     public void mouseClicked(MouseEvent e) {}
 
 	// From ActionListener
@@ -75,6 +73,11 @@ public class InfoPanel extends JPanel implements MouseListener, ActionListener
 	{
 		if(e.getSource().equals(refresh))
 			gpRef.resetFrog();
+		if(e.getSource().equals(answers)){
+			// Save answer
+			// Send to Stage.java to evaluate
+			gpRef.requestFocusInWindow();
+		}
 	}
 
 }

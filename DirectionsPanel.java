@@ -83,6 +83,7 @@ public class DirectionsPanel extends JPanel implements ActionListener
 		}
 	}
 	
+	// Fills JTextArea with either directions of an error message
 	public void fillDirections()
 	{
 		Font dirFont = new Font("SansSerif", Font.BOLD, 15);

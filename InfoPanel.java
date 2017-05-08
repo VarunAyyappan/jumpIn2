@@ -89,7 +89,6 @@ public class InfoPanel extends JPanel implements MouseListener, ActionListener
 			if(currentStage.checkAnswer(answers.getText()))
 			{
 				trys = 0;
-				
 			}
 			else
 			{

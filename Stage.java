@@ -10,6 +10,7 @@
  */
 
 import java.awt.Color;    // Classes for Color, Graphics
+import java.awt.Font;
 import java.awt.Graphics;
 
 public class Stage 
@@ -58,6 +59,10 @@ public class Stage
 			point1X = ((int)(Math.random()*5))*2;
 			point1Y = 0;
 			point3X = ((int)(Math.random()*5))*2+point1X;
+			
+			if(point3X == point1X)
+				point3X+=4;
+
 			point3Y = 0;
 			point2X = (point3X+point1X)/2;
 			point2Y = ((int)(Math.random()*5))*2;
@@ -75,6 +80,7 @@ public class Stage
 		{
 			a = ((double)point1Y-point2Y)/(((double)point1X-point2X)*((double)point1X-point2X));
 			answer = "y="+a+"(x-"+point2X +")^2+"+point2Y;
+			System.out.println(answer);
 		}
 		else if(difLevel == 3)
 		{
@@ -102,9 +108,9 @@ public class Stage
 		if(difLevel==1 || difLevel==2)
 		{
 			answerIn = answerIn.trim();
-			withAIn = answerIn.substring(answerIn.indexOf("="), answerIn.indexOf("("));
-			withHIn = answerIn.substring(answerIn.indexOf("-"), answerIn.indexOf(")"));
-			withKIn = answerIn.substring(answerIn.indexOf("+"), answerIn.length());
+			withAIn = answerIn.substring(answerIn.indexOf("=")+1, answerIn.indexOf("("));
+			withHIn = answerIn.substring(answerIn.lastIndexOf("-")+1, answerIn.indexOf(")"));
+			withKIn = answerIn.substring(answerIn.indexOf("+")+1, answerIn.length());
 
 			if(withAIn.indexOf(".")==-1)
 				withAIn = withAIn + ".0";
@@ -114,14 +120,17 @@ public class Stage
 			kIn = Integer.parseInt(withKIn);
 
 			if(a==aIn && point2X==hIn && point2Y==kIn)
-				return true;
+			{
+				solved = true;
+				return solved;
+			}
 		}
 		else if(difLevel==3 || difLevel==4)
 		{
 			answerIn = answerIn.trim();
-			withAIn = answerIn.substring(answerIn.indexOf("="), answerIn.indexOf("x"));
-			withBIn = answerIn.substring(answerIn.indexOf("+"), answerIn.lastIndexOf("x"));
-			withCIn = answerIn.substring(answerIn.lastIndexOf("+"), answerIn.length());
+			withAIn = answerIn.substring(answerIn.indexOf("=")+1, answerIn.indexOf("x"));
+			withBIn = answerIn.substring(answerIn.indexOf("+")+1, answerIn.lastIndexOf("x"));
+			withCIn = answerIn.substring(answerIn.lastIndexOf("+")+1, answerIn.length());
 
 			if(withAIn.indexOf(".")==-1)
 				withAIn = withAIn + ".0";
@@ -137,18 +146,24 @@ public class Stage
 			cIn = Double.parseDouble(withBIn);
 
 			if(a==aIn && b==hIn && c==kIn)
-				return true;
+			{
+				solved = true;
+				return solved;
+			}
 		}
 
-		return false;
+		return solved;
 	}
 
 	// Draws stage on game panel
 	public void draw(Graphics g) 
 	{
+		g.setColor(Color.RED);
+		Font font = new Font("SansSerif", Font.BOLD, 20);
+		g.setFont(font);
+
 		if(!solved)
 		{
-			g.setColor(Color.YELLOW);
 			g.fillOval(290, 355, dotRadius, dotRadius);
 			g.drawString("("+point1X+","+point1Y+")", 300, 345);
 			g.fillOval(355, 275, dotRadius, dotRadius);
@@ -160,8 +175,7 @@ public class Stage
 		}
 		else
 		{
-			g.setColor(Color.YELLOW);
-			g.drawArc(300, 275, 120, 100, 0, 180);
+			g.drawArc(300, 310, 120, 100, 0, 180);
 		}
 	}
 

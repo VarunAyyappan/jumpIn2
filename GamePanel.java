@@ -10,7 +10,7 @@
  * control it. The player can also acess the pause menu.
  * 
  * Testing:
- * Should Work: w, a, d, and p keys, mouse click to get focus
+ * Should Work: w, a, d, and p keys
  * Shouldn't Work: Anything else
  */
 
@@ -18,11 +18,7 @@ import java.awt.Color;     // Classes for Color, Graphics, Image
 import java.awt.Graphics;
 import java.awt.Image;
 
-import java.awt.event.ActionEvent;   // Classes for ActionListener, MouseListener,KeyListener
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.KeyEvent;
+import java.awt.event.KeyEvent;    // Classes for KeyListener
 import java.awt.event.KeyListener;
 
 
@@ -31,20 +27,20 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import javax.swing.JPanel;   // Classes for JPanel, Timer
-import javax.swing.Timer;
 
-public class GamePanel extends JPanel implements KeyListener, MouseListener, ActionListener 
+public class GamePanel extends JPanel implements KeyListener
 {
 	// For frog image
 	private Image frogImg;
 	private String frogImgName;
 	private int frogX, frogY, vx, vy;
 	
-	// For Animation
-	private int timeSlice; 
-	private Timer timer;
+	// For the stage and problem
 	private int boundary;
 	private Stage[] stages;
+	private int currentStage;
+	private boolean isSolved;
+	private String input;
 	
 	// For acess to pause menu
 	private JumpIn jiRef;
@@ -59,16 +55,24 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Act
 		vx = 10;
 		vy = 10;
 		
-		timeSlice = 50;
-		timer = new Timer(timeSlice, this);
-		timer.setInitialDelay(200);
-		timer.start();
-		timer.addActionListener(this);
-		
 		boundary = sizeXIn;
-		stages = new Stage[20];
+		stages = new Stage[40];
+		isSolved = false;
 		
-		stages[0] = new Stage(this, 1);
+		for(int i=0;i<stages.length;i++)
+		{
+			if(i<10)
+				stages[i]= new Stage(this, 1, true);
+			else if(i<20)
+				stages[i]= new Stage(this, 2, true);
+			else if(i<30)
+				stages[i]= new Stage(this, 3, true);
+			else
+				stages[i]= new Stage(this, 4, true);
+		}
+
+		currentStage = 0;
+		input = "";
 		
 		jiRef = jiRefIn;
 		
@@ -93,26 +97,43 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Act
 	}
 	
 	// Resets Frogs position to the beginning position
-	public void resetFrog() {
+	public void resetFrog() 
+	{
 		frogX = 0;
 		setFrogY(300);
 		requestFocusInWindow();
 	}
 	
-	public int getFrogY() {
+	// Some getter and setter methods
+	public int getFrogY() 
+	{
 		return frogY;
 	}
 
-	public void setFrogY(int frogYIn) {
+	public void setFrogY(int frogYIn) 
+	{
 		frogY = frogYIn;
 	}
 	
-	public int getFrogX() {
+	public int getFrogX() 
+	{
 		return frogX;
 	}
 
-	public void setFrogX(int frogXIn) {
+	public void setFrogX(int frogXIn) 
+	{
 		frogX = frogXIn;
+	}
+
+	public Stage getCurrentStageObj() 
+	{
+		return stages[currentStage];
+	}
+
+	public void setCurrentStage(int stageNum)
+	{
+		currentStage = stageNum;
+		resetFrog();
 	}
 
 	// Graphics happens here
@@ -127,7 +148,7 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Act
 		g.setColor(Color.BLACK);
 		g.fillRect(300, 365, 120, 300);
 		
-		stages[0].draw(g);
+		stages[currentStage].draw(g);
 	}
 	
 	// KeyListener methods
@@ -142,7 +163,6 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Act
 		else if(code==e.VK_W)
 		{
 			// Testing jump, not working properly as of right now...
-			
 			for(int num=0; num<150; num++)
 			{
 				frogX++;
@@ -167,23 +187,4 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Act
 	}
 	public void keyTyped(KeyEvent e) {}
 	public void keyReleased(KeyEvent e) {}
-
-	// MouseListener methods 
-	// Trying to use this for focus switch, not working right now...
-	public void mousePressed(MouseEvent e) 
-	{
-       requestFocusInWindow();
-    }
-
-    public void mouseReleased(MouseEvent e) {}
-    public void mouseEntered(MouseEvent e) {}
-    public void mouseExited(MouseEvent e) { }
-    public void mouseClicked(MouseEvent e) {}
-	
-	// ActionListener method
-	public void actionPerformed(ActionEvent e) 
-	{
-		repaint();
-	}
-	
 }

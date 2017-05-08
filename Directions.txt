@@ -1,4 +1,28 @@
+Character Movement:
 Use the A key on the keyboard to move your character left.
-Use the D Key to move your character right.
+Use the D key to move your character right.
 Use the W key to have your character jump.
+
+Pause Menu:
+Use p on the keyboard to enter into the pause menu anytime during the game
+The pause menu will let you reenter the game, look up these directions, and quit the game.
+
+Parabloa Problem Input:
 Input your answer to the question in the input given near the bottom of the screen.
+You get three trys to answer the question.
+You will get hints when you get the answer wrong.
+
+How to Solve the Problems:
+1) First Stage Problems:
+    y = a(x-h)^2 + k
+    h = vertex x coordinate, k = vertex y coordinate
+    Then solve for a by plugging in a non-vertx point.
+
+2) Second Stage Problems:
+    Same as first stage problems.
+
+3) Third Stage Problems:
+    Use first stage steps, then open up parenthesis and simplify .
+
+4) Challange Problems:
+    Use a system of equations to sole theses.

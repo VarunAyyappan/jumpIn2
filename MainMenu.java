@@ -49,7 +49,7 @@ public class MainMenu extends JPanel implements ActionListener
 		dirButton.setSize(100, 50);
 	}
 	
-	// Paint panel
+	// Graphics happens here
 	public void paintComponent(Graphics g)
 	{
 		super.paintComponent(g);

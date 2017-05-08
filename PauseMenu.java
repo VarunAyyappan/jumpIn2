@@ -57,7 +57,7 @@ public class PauseMenu extends JPanel implements ActionListener
 		quitButton.setSize(100, 50);
 	}
 	
-	// Paint panel
+	// Graphics happens here
 	public void paintComponent(Graphics g)
 	{
 		super.paintComponent(g);

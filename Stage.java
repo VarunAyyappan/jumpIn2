@@ -61,11 +61,14 @@ public class Stage
 			point3X = ((int)(Math.random()*5))*2+point1X;
 			
 			if(point3X == point1X)
-				point3X+=4;
+				point3X += 4;
 
 			point3Y = 0;
 			point2X = (point3X+point1X)/2;
 			point2Y = ((int)(Math.random()*5))*2;
+
+			if(point2Y == 0)
+				point2Y = 6;
 		}
 		else if(difLevel == 4)
 		{
@@ -162,20 +165,24 @@ public class Stage
 		Font font = new Font("SansSerif", Font.BOLD, 20);
 		g.setFont(font);
 
+		g.fillOval(290, 355, dotRadius, dotRadius);
+		g.fillOval(355, 355-30*point2X, dotRadius, dotRadius);
+		g.fillOval(420, 355, dotRadius, dotRadius);
+		
 		if(!solved)
 		{
-			g.fillOval(290, 355, dotRadius, dotRadius);
+			//g.fillOval(290, 355, dotRadius, dotRadius);
 			g.drawString("("+point1X+","+point1Y+")", 300, 345);
-			g.fillOval(355, 275, dotRadius, dotRadius);
-			g.drawString("("+point2X+","+point2Y+")", 355, 265);
-			g.fillOval(420, 355, dotRadius, dotRadius);
+			//g.fillOval(355, 355-30*point2X, dotRadius, dotRadius);
+			g.drawString("("+point2X+","+point2Y+")", 355, 355-30*point2X-10);
+			//g.fillOval(420, 355, dotRadius, dotRadius);
 
 			if(difLevel==1 || difLevel==4)
 				g.drawString("("+point3X+","+point3Y+")", 420, 345);
 		}
 		else
 		{
-			g.drawArc(300, 310, 120, 100, 0, 180);
+			g.drawArc(300, 355-30*point2X, 120, 355-30*point2X, 0, 180);
 		}
 	}
 

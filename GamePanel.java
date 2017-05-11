@@ -10,7 +10,7 @@
  * control it. The player can also acess the pause menu.
  * 
  * Testing:
- * Should Work: w, a, d, and p keys
+ * Should Work: a, d, and p keys
  * Shouldn't Work: Anything else
  */
 
@@ -40,6 +40,7 @@ public class GamePanel extends JPanel implements KeyListener
 	private Stage[] stages;
 	private int currentStage;
 	private boolean isSolved;
+	private boolean gameOver;
 	private String input;
 	
 	// For acess to pause menu
@@ -51,13 +52,14 @@ public class GamePanel extends JPanel implements KeyListener
 		frogImgName = "22494_Flipped.png";
 		getMyImage();
 		frogX = 0;
-		setFrogY(300);
+		frogY = 300;
 		vx = 10;
 		vy = 10;
 		
 		boundary = sizeXIn;
 		stages = new Stage[40];
 		isSolved = false;
+		gameOver = false;
 		
 		for(int i=0;i<stages.length;i++)
 		{
@@ -100,29 +102,14 @@ public class GamePanel extends JPanel implements KeyListener
 	public void resetFrog() 
 	{
 		frogX = 0;
-		setFrogY(300);
+		frogY = 300;
 		requestFocusInWindow();
 	}
 	
 	// Some getter and setter methods
-	public int getFrogY() 
+	public void setIsSolved(boolean isSolvedIn)
 	{
-		return frogY;
-	}
-
-	public void setFrogY(int frogYIn) 
-	{
-		frogY = frogYIn;
-	}
-	
-	public int getFrogX() 
-	{
-		return frogX;
-	}
-
-	public void setFrogX(int frogXIn) 
-	{
-		frogX = frogXIn;
+		isSolved = isSolvedIn;
 	}
 
 	public Stage getCurrentStageObj() 
@@ -140,8 +127,8 @@ public class GamePanel extends JPanel implements KeyListener
 	public void paintComponent(Graphics g)
 	{
 		super.paintComponent(g);
-		g.drawImage(frogImg, frogX, getFrogY(), frogX+95, getFrogY()+65, 340, 0, 435, 65, this);
-		
+		g.drawImage(frogImg, frogX, frogY, frogX+95, frogY+65, 340, 0, 435, 65, this);
+
 		g.setColor(Color.GREEN);
 		g.fillRect(0, 365, boundary, 300);
 		
@@ -156,34 +143,20 @@ public class GamePanel extends JPanel implements KeyListener
 	{
 		int code = e.getKeyCode();
 		
-		if(code==e.VK_A && frogX>0)
-			frogX-=vx;
-		else if(code==e.VK_D && frogX+95<boundary)
-			frogX+=vx;
-		else if(code==e.VK_W)
+		if(!gameOver)
 		{
-			// Testing jump, not working properly as of right now...
-			for(int num=0; num<150; num++)
+			if((code==e.VK_A || code==e.VK_UP) && frogX>0)
+			frogX-=vx;
+			else if((code==e.VK_D || code==e.VK_DOWN) && frogX+95<boundary)
 			{
-				frogX++;
-
-				if(num%10==0)
-					frogY-=25;
-
-				repaint();
+				if(isSolved)
+					frogX+=vx;
+				else if(!isSolved && frogX<=200)
+					frogX+=vx;
 			}
-			for(int num=150; num>0; num--)
-			{
-				frogX++;
-
-				if(num%10==0)
-					frogY+=25;
-
-				repaint();
-			}
+			else if(code==e.VK_P)
+				jiRef.shift(4, 2);
 		}
-		else if(code==e.VK_P)
-			jiRef.shift(4, 2);
 	}
 	public void keyTyped(KeyEvent e) {}
 	public void keyReleased(KeyEvent e) {}

@@ -13,6 +13,9 @@ import java.awt.Color;    // Classes for Color, Graphics
 import java.awt.Font;
 import java.awt.Graphics;
 
+import java.math.BigDecimal;       // Class for BigDecimal
+import java.math.RoundingMode;
+
 public class Stage 
 {	
 	// For the problem
@@ -50,29 +53,33 @@ public class Stage
 		createPoints();
 		findSolution();
 	}
-
+	
+	// Various getter methods
+	public int getDifLevel()
+	{
+		return difLevel;
+	}
+	
+	public boolean getSolved()
+	{
+		return solved;
+	}
+	
 	// Create basis of problems
 	public void createPoints()
 	{
 		if(difLevel==1 || difLevel==2  || difLevel==3)
 		{
-			point1X = ((int)(Math.random()*5))*2;
+			point1X = ((int)(Math.random()*5)+1)*2;
 			point1Y = 0;
-			point3X = ((int)(Math.random()*5))*2+point1X;
-			
-			if(point3X == point1X)
-				point3X += 4;
-
+			point3X = ((int)(Math.random()*5)+1)*2+point1X;
 			point3Y = 0;
 			point2X = (point3X+point1X)/2;
-			point2Y = ((int)(Math.random()*5))*2;
-
-			if(point2Y == 0)
-				point2Y = 6;
+			point2Y = ((int)(Math.random()*5)+1)*2;
 		}
 		else if(difLevel == 4)
 		{
-			
+			// insert difLevel 4 creation here
 		}
 	}
 
@@ -83,6 +90,9 @@ public class Stage
 		{
 			a = ((double)point1Y-point2Y)/(((double)point1X-point2X)*((double)point1X-point2X));
 			answer = "y="+a+"(x-"+point2X +")^2+"+point2Y;
+
+			a = roundToHundreath(a);
+
 			System.out.println(answer);
 		}
 		else if(difLevel == 3)
@@ -90,8 +100,21 @@ public class Stage
 			a = ((double)point1Y-point2Y)/(((double)point1X-point2X)*((double)point1X-point2X));
 			b = 2*point2X*a;
 			c = point2Y+(point2X*point2X);
+
+			a = roundToHundreath(a);
+			b = roundToHundreath(b);
+			c = roundToHundreath(c);
+
 			answer = "y="+a+"x^2-"+b+"x+"+point2Y;
 		}
+	}
+
+	// Rounds digits to nearest hundreath
+	public static double roundToHundreath(double value) {
+    	BigDecimal bd = new BigDecimal(""+value);
+    	bd = bd.setScale(2, RoundingMode.HALF_UP);
+    	value = bd.doubleValue();
+		return value;
 	}
 
 	// Check answer with string passed in
@@ -171,18 +194,15 @@ public class Stage
 		
 		if(!solved)
 		{
-			//g.fillOval(290, 355, dotRadius, dotRadius);
 			g.drawString("("+point1X+","+point1Y+")", 300, 345);
-			//g.fillOval(355, 355-30*point2X, dotRadius, dotRadius);
 			g.drawString("("+point2X+","+point2Y+")", 355, 355-30*point2X-10);
-			//g.fillOval(420, 355, dotRadius, dotRadius);
-
+			
 			if(difLevel==1 || difLevel==4)
 				g.drawString("("+point3X+","+point3Y+")", 420, 345);
 		}
 		else
 		{
-			g.drawArc(300, 355-30*point2X, 120, 355-30*point2X, 0, 180);
+			g.drawArc(300, 360-30*point2X, 120, 60*point2X, 0, 180);
 		}
 	}
 

@@ -1,2 +1,13 @@
 Source for sprite file:
 https://www.spriters-resource.com/pc_computer/maplestory/sheet/22494/
+
+Magekar. Frog Sprites from MapleStory Game. Digital image. The Spriters Resource. 
+    The VG Resource, n.d. Web. 10 May 2017. <https://www.spriters-resource.com/pc
+    _computer/maplestory/sheet/22494/>.
+
+Help with Rounding:
+http://stackoverflow.com/questions/2808535/round-a-double-to-2-decimal-places
+
+Rajesh, and Jonik. "Round a Double to 2 Decimal Places." Stack Overflow. Stack Exchange, 
+    11 May 2010. Web. 10 May 2017. <http://stackoverflow.com/questions/2808535/round-a-
+    double-to-2-decimal-places>.

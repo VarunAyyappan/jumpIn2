@@ -68,6 +68,11 @@ public class Stage
 	{
 		return answer;
 	}
+
+	public int getPoint2Y()
+	{
+		return point2Y;
+	}
 	
 	// Create basis of problems
 	public void createPoints()
@@ -183,43 +188,30 @@ public class Stage
 	// Gets frog in GamePanel to follow path of parabola
 	public void drawJump(int frogXIn, int frogYIn)
 	{
-		int frogYLimit = 355-20*point2X;
+		int frogYLimit = 355-20*point2Y;
 
 		long expectedtime = System.currentTimeMillis();
 		long sleeptime = 500;
 
-		for(int i=200; i<=420; i++)
+		for(int i=200; i<=420; i+=2)
 		{
 			// Wait for a secound
-			while(System.currentTimeMillis() < expectedtime) {}
+			while(System.currentTimeMillis() < expectedtime) { }
    			expectedtime += sleeptime;
+
+			gpRef.repaint();
 			
 			System.out.println("i = " + i);
 			
-			frogXIn++;
+			frogXIn+=2;
 
 			if(i<=310)
-				frogYIn+=(frogYLimit/110);
+				frogYIn+=(frogYLimit/110 + 2);
 			else
-				frogYIn-=(frogYLimit/110);
+				frogYIn-=(frogYLimit/110 + 2);
 
 			gpRef.setFrogX(frogXIn);
 			gpRef.setFrogY(frogYIn);
-
-			// Pause for 500 miliseconds
-			/*try 
-			{
-            	System.out.println("sleeping");
-				Thread.currentThread().sleep(500);
-				System.out.println("done sleeping");
-        	} 
-			catch (InterruptedException e) 
-			{
-           		System.out.println("ERROR: Interruption while thread tried to sleep...");
-            	e.printStackTrace();
-			}*/
-
-			gpRef.repaint();
 		}
 	}
 
@@ -231,20 +223,20 @@ public class Stage
 		g.setFont(font);
 
 		g.fillOval(290, 355, dotRadius, dotRadius);
-		g.fillOval(355, 355-20*point2X, dotRadius, dotRadius);
+		g.fillOval(355, 355-20*point2Y, dotRadius, dotRadius);
 		g.fillOval(420, 355, dotRadius, dotRadius);
 		
 		if(!solved)
 		{
 			g.drawString("("+point1X+","+point1Y+")", 300, 345);
-			g.drawString("("+point2X+","+point2Y+")", 355, 355-20*point2X-10);
+			g.drawString("("+point2X+","+point2Y+")", 355, 355-20*point2Y-10);
 			
 			if(difLevel==1 || difLevel==4)
 				g.drawString("("+point3X+","+point3Y+")", 420, 345);
 		}
 		else
 		{
-			g.drawArc(300, 360-20*point2X, 120, 40*point2X, 0, 180);
+			g.drawArc(300, 360-20*point2Y, 120, 40*point2Y, 0, 180);
 		}
 	}
 

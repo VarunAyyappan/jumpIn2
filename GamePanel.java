@@ -183,15 +183,20 @@ public class GamePanel extends JPanel implements KeyListener
 		int code = e.getKeyCode();
 		
 			if((code==e.VK_A || code==e.VK_LEFT) && frogX>0)
+			{
 				frogX-=vx;
+
+				// Frog shouldn't walk back and fall into pit
+				if(stages[currentStage].getSolved() && frogX>400 && frogX<420)
+					frogX = 420;	
+			}
 			else if((code==e.VK_D || code==e.VK_RIGHT) && frogX+95<boundary)
 			{
-				if(stages[currentStage].getSolved() && frogX>200 && frogX<=210)
-					stages[currentStage].drawJump(frogX, frogY);
-				
 				// If problem isn't' solved, player shouldn't be able to skip it.
-				else if(stages[currentStage].getSolved() || frogX<=200)
+				if(!stages[currentStage].getSolved() || frogX<=200)
 					frogX+=vx;
+				else if(stages[currentStage].getSolved() && frogX>200 && frogX<=210)
+					stages[currentStage].drawJump(frogX, frogY);
 			}
 			else if(code==e.VK_P)
 				jiRef.shift(4, 2);

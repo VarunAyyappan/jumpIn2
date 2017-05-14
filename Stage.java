@@ -189,15 +189,16 @@ public class Stage
 	public void drawJump(int frogXIn, int frogYIn)
 	{
 		int frogYLimit = 355-20*point2Y;
+		int origFrogY = frogYIn;
 
-		long expectedtime = System.currentTimeMillis();
-		long sleeptime = 500;
+		//long sleeptime = 5000;
+		//long expectedtime = System.currentTimeMillis() + sleeptime;
 
-		for(int i=200; i<=420; i+=2)
+		/*for(int i=200; i<=420; i+=2)
 		{
 			// Wait for a secound
-			while(System.currentTimeMillis() < expectedtime) { }
-   			expectedtime += sleeptime;
+			//while(System.currentTimeMillis() < expectedtime) { }
+   			//expectedtime += sleeptime;
 
 			gpRef.repaint();
 			
@@ -212,7 +213,40 @@ public class Stage
 
 			gpRef.setFrogX(frogXIn);
 			gpRef.setFrogY(frogYIn);
-		}
+		}*/
+
+		//while(System.currentTimeMillis() < expectedtime) { }
+   		//expectedtime += sleeptime;
+		
+		System.out.println("iuohfsejiooswef");
+
+		frogXIn = 310;
+		frogYIn = frogYLimit;
+
+		gpRef.setFrogX(frogXIn);
+		gpRef.setFrogY(frogYIn);
+
+		System.out.println("q2eioj;a");
+
+		gpRef.repaint();
+
+		System.out.println("erngfakrfjn;a");
+	}
+
+	public void drawJump(int origFrogYIn)
+	{
+		//long sleeptime = 5000;
+		//long expectedtime = System.currentTimeMillis() + sleeptime;
+		
+		//while(System.currentTimeMillis() < expectedtime) { }
+   		//expectedtime += sleeptime;
+
+		int frogX = 420;
+		
+		gpRef.setFrogX(frogX);
+		gpRef.setFrogY(origFrogYIn);
+
+		gpRef.repaint();
 	}
 
 	// Draws problem or parabola on GamePanel

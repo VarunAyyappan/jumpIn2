@@ -91,7 +91,10 @@ public class JumpIn
 	public void shift(int selection, int source) 
 	{
 		if(selection == 1)
+		{
+			gPanel.resetFrog();
 			cards.show(jiPanel, MAIN_MENU);
+		}
 		else if(selection == 2)
 		{
 			cards.show(jiPanel, GAME_PANEL);

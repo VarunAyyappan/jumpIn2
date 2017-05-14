@@ -40,6 +40,7 @@ public class GamePanel extends JPanel implements KeyListener
 	private Stage[] stages;
 	private int currentStage;
 	private String input;
+	private boolean needsToGoDown;
 
 	// For surronding level design
 	
@@ -151,6 +152,8 @@ public class GamePanel extends JPanel implements KeyListener
 	public void paintComponent(Graphics g)
 	{
 		super.paintComponent(g);
+		//frogY = stages[currentStage].getPoint2Y();
+		//frogX = 310;
 		g.drawImage(frogImg, frogX, frogY, frogX+95, frogY+65, 340, 0, 435, 65, this);
 
 		if(stages[currentStage].getDifLevel()==1)
@@ -192,11 +195,16 @@ public class GamePanel extends JPanel implements KeyListener
 			}
 			else if((code==e.VK_D || code==e.VK_RIGHT) && frogX+95<boundary)
 			{
-				// If problem isn't' solved, player shouldn't be able to skip it.
-				if(!stages[currentStage].getSolved() || frogX<=200)
-					frogX+=vx;
-				else if(stages[currentStage].getSolved() && frogX>200 && frogX<=210)
+				if(stages[currentStage].getSolved() && frogX>200 && frogX<=210)
+				{
 					stages[currentStage].drawJump(frogX, frogY);
+					needsToGoDown = true;
+				}
+				else if(needsToGoDown)
+					stages[currentStage].drawJump(305);
+				// If problem isn't' solved, player shouldn't be able to skip it.
+				else if(stages[currentStage].getSolved() || frogX<=200)
+					frogX+=vx;
 			}
 			else if(code==e.VK_P)
 				jiRef.shift(4, 2);

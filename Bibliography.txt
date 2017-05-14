@@ -11,3 +11,9 @@ http://stackoverflow.com/questions/2808535/round-a-double-to-2-decimal-places
 Rajesh, and Jonik. "Round a Double to 2 Decimal Places." Stack Overflow. Stack Exchange, 
     11 May 2010. Web. 10 May 2017. <http://stackoverflow.com/questions/2808535/round-a-
     double-to-2-decimal-places>.
+
+Help with Pauseing in java:
+http://stackoverflow.com/questions/8586137/java-delay-wait
+Adams, Gray, and D. R. Bendnillo. "Java Delay/Wait." Stack Overflow. Stack Exahange, 
+    05 Nov. 2015. Web. 14 May 2017. <http://stackoverflow.com/questions/8586137/java
+    -delay-wait>.

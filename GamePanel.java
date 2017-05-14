@@ -7,7 +7,7 @@
  * 
  * The class that sets up top portion of main game panel.
  * This is where the player will see the character in a stage and directly
- * control it. The player can also acess the pause menu.
+ * control it. The player can also access the pause menu.
  * 
  * Testing:
  * Should Work: a, d, and p keys
@@ -63,13 +63,13 @@ public class GamePanel extends JPanel implements KeyListener
 		for(int i=0;i<stages.length;i++)
 		{
 			if(i<10)
-				stages[i]= new Stage(this, 1, true);
+				stages[i]= new Stage(this, 1, boundary, true);
 			else if(i<20)
-				stages[i]= new Stage(this, 2, true);
+				stages[i]= new Stage(this, 2, boundary, true);
 			else if(i<30)
-				stages[i]= new Stage(this, 3, true);
+				stages[i]= new Stage(this, 3, boundary, true);
 			else
-				stages[i]= new Stage(this, 4, true);
+				stages[i]= new Stage(this, 4, boundary, true);
 		}
 
 		currentStage = 0;
@@ -101,7 +101,7 @@ public class GamePanel extends JPanel implements KeyListener
 	public void resetFrog() 
 	{
 		frogX = 0;
-		frogY = 305;
+		frogY = stages[currentStage].getOrigY();
 		requestFocusInWindow();
 	}
 	
@@ -124,11 +124,10 @@ public class GamePanel extends JPanel implements KeyListener
 		return needsToGoDown;
 	}
 
-
-	public int getOrigY()
+	public void setNeedsToGoDown(boolean needsToGoDownIn)
 	{
-		return 305;
-	}
+		needsToGoDown = needsToGoDownIn;	
+	} 
 
 	public void setFrogX(int frogXIn)
 	{
@@ -163,31 +162,12 @@ public class GamePanel extends JPanel implements KeyListener
 	public void paintComponent(Graphics g)
 	{
 		super.paintComponent(g);
-		
-		if(stages[currentStage].getDifLevel()==1)
-		{
-			g.setColor(Color.GREEN);
-			g.fillRect(0, 365, boundary, 300);
-			g.setColor(Color.BLACK);
-			g.fillRect(300, 365, 120, 300);
-			
-		}
-		else if(stages[currentStage].getDifLevel()==2)
-		{
 
-		}
-		else if(stages[currentStage].getDifLevel()==3)
-		{
-			
-		}
-		else if(stages[currentStage].getDifLevel()==4)
-		{
-			// level 4 stage here
-		}
+		stages[currentStage].draw(g);
 
 		g.drawImage(frogImg, frogX, frogY, frogX+95, frogY+65, 340, 0, 435, 65, this);
 
-		stages[currentStage].draw(g);
+		stages[currentStage].getProblem().draw(g);
 	}
 
 	// KeyListener methods
@@ -201,20 +181,36 @@ public class GamePanel extends JPanel implements KeyListener
 
 				// Frog shouldn't walk back and fall into pit
 				if(stages[currentStage].getSolved() && frogX>400 && frogX<420)
-					frogX = 420;	
+					frogX = 420;
+				
+				// If frog is on hill, is should move up/down
+				if(stages[currentStage].getIfOnHill(frogX))
+				{
+					if(stages[currentStage].getIsGoingUp())
+						frogY++;
+					else
+						frogY--;
+				}	
 			}
 			else if((code==e.VK_D || code==e.VK_RIGHT) && frogX+95<boundary)
 			{
 				if(stages[currentStage].getSolved() && frogX>200 && frogX<=210)
 				{
-					stages[currentStage].drawJump(frogX, frogY);
+					stages[currentStage].getProblem().drawJumpUp(frogX, frogY);
 					needsToGoDown = true;
 				}
-				//else if(needsToGoDown)
-					//stages[currentStage].drawJump(305);
 				// If problem isn't' solved, player shouldn't be able to skip it.
 				else if(stages[currentStage].getSolved() || frogX<=200)
 					frogX+=vx;
+
+				// If frog is on hill, is should move up/down
+				if(stages[currentStage].getIfOnHill(frogX))
+				{
+					if(stages[currentStage].getIsGoingUp())
+						frogY-=10;
+					else
+						frogY+=10;
+				}
 			}
 			else if(code==e.VK_P)
 				jiRef.shift(4, 2);

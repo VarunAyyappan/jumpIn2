@@ -170,7 +170,7 @@ public class InfoPanel extends JPanel implements ActionListener
 		else if(lossLife)
 		{
 			g.drawString("Sorry, the answer was", 10, 110);
-			g.drawString(currentStage.getAnswer()+"...", 10, 160);
+			g.drawString(currentStage.getProblem().getAnswer()+"...", 10, 160);
 		}
 		else
 			g.drawString("Messages will appear here!", 10, 150);
@@ -181,7 +181,7 @@ public class InfoPanel extends JPanel implements ActionListener
 	{
 		if(e.getSource().equals(answers))
 		{
-			if(currentStage.checkAnswer(answers.getText()))
+			if(currentStage.getProblem().checkAnswer(answers.getText()))
 			{
 				if(trys==0)
 					rightFirstTime++;
@@ -258,13 +258,15 @@ class RefreshPanels implements ActionListener
 		// If jump animation needs to continue
 		if(gpRef.getNeedsToGoDown())
 		{
-			long sleeptime = 1000;
+			// This will make the program wait 500 milliseconds
+			long sleeptime = 500;
 			long expectedtime = System.currentTimeMillis() + sleeptime;
-		
-			while(System.currentTimeMillis() < expectedtime) { }
+			while(System.currentTimeMillis() < expectedtime) {}
    			expectedtime += sleeptime;
 			
-			gpRef.getCurrentStageObj().drawJump(gpRef.getOrigY());
+			gpRef.getCurrentStageObj().getProblem().drawJumpDown(gpRef.getCurrentStageObj().getOrigY());
+			gpRef.setNeedsToGoDown(false);
+			gpRef.requestFocusInWindow();
 		}
 	}
 }

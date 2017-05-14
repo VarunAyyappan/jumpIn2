@@ -254,5 +254,17 @@ class RefreshPanels implements ActionListener
 		// If the player reached end of level go to next one
 		if(gpRef.getIfStageOver())
 			ipRef.shiftToNextStage();
+
+		// If jump animation needs to continue
+		if(gpRef.getNeedsToGoDown())
+		{
+			long sleeptime = 1000;
+			long expectedtime = System.currentTimeMillis() + sleeptime;
+		
+			while(System.currentTimeMillis() < expectedtime) { }
+   			expectedtime += sleeptime;
+			
+			gpRef.getCurrentStageObj().drawJump(gpRef.getOrigY());
+		}
 	}
 }

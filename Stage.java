@@ -68,11 +68,6 @@ public class Stage
 	{
 		return answer;
 	}
-
-	public int getPoint2Y()
-	{
-		return point2Y;
-	}
 	
 	// Create basis of problems
 	public void createPoints()
@@ -88,7 +83,7 @@ public class Stage
 		}
 		else if(difLevel == 4)
 		{
-			// insert difLevel 4 creation here
+			// Insert difLevel 4 creation here
 		}
 	}
 
@@ -189,48 +184,15 @@ public class Stage
 	public void drawJump(int frogXIn, int frogYIn)
 	{
 		int frogYLimit = 355-20*point2Y;
-		int origFrogY = frogYIn;
-
-		//long sleeptime = 5000;
-		//long expectedtime = System.currentTimeMillis() + sleeptime;
-
-		/*for(int i=200; i<=420; i+=2)
-		{
-			// Wait for a secound
-			//while(System.currentTimeMillis() < expectedtime) { }
-   			//expectedtime += sleeptime;
-
-			gpRef.repaint();
-			
-			System.out.println("i = " + i);
-			
-			frogXIn+=2;
-
-			if(i<=310)
-				frogYIn+=(frogYLimit/110 + 2);
-			else
-				frogYIn-=(frogYLimit/110 + 2);
-
-			gpRef.setFrogX(frogXIn);
-			gpRef.setFrogY(frogYIn);
-		}*/
-
-		//while(System.currentTimeMillis() < expectedtime) { }
-   		//expectedtime += sleeptime;
+		int origFrogY = frogYIn;	
 		
-		System.out.println("iuohfsejiooswef");
-
 		frogXIn = 310;
 		frogYIn = frogYLimit;
 
 		gpRef.setFrogX(frogXIn);
 		gpRef.setFrogY(frogYIn);
 
-		System.out.println("q2eioj;a");
-
 		gpRef.repaint();
-
-		System.out.println("erngfakrfjn;a");
 	}
 
 	public void drawJump(int origFrogYIn)

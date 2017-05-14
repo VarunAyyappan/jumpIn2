@@ -104,19 +104,28 @@ public class GamePanel extends JPanel implements KeyListener
 		requestFocusInWindow();
 	}
 	
-	// Get current stage reference (meant for InfoPanel.java)
+	// Various getter and setter methods
 	public Stage getCurrentStageObj() 
 	{
 		return stages[currentStage];
 	}
 
-	// Get if frog is at end of stage (meant for InfoPanel.java)
 	public boolean getIfStageOver()
 	{
 		if(frogX+100>=boundary)
 			return true;
 		else
 			return false;
+	}
+
+	public void setFrogX(int frogXIn)
+	{
+		frogX = frogXIn;
+	}
+
+	public void setFrogY(int frogYIn)
+	{
+		frogY = frogYIn;
 	}
 
 	// Shift to next stage based on number of problems solved on 1st attempt
@@ -174,11 +183,14 @@ public class GamePanel extends JPanel implements KeyListener
 		int code = e.getKeyCode();
 		
 			if((code==e.VK_A || code==e.VK_LEFT) && frogX>0)
-			frogX-=vx;
+				frogX-=vx;
 			else if((code==e.VK_D || code==e.VK_RIGHT) && frogX+95<boundary)
 			{
+				if(stages[currentStage].getSolved() && frogX>200 && frogX<=210)
+					stages[currentStage].drawJump(frogX, frogY);
+				
 				// If problem isn't' solved, player shouldn't be able to skip it.
-				if(stages[currentStage].getSolved() || frogX<=200)
+				else if(stages[currentStage].getSolved() || frogX<=200)
 					frogX+=vx;
 			}
 			else if(code==e.VK_P)

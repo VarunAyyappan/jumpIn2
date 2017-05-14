@@ -180,7 +180,50 @@ public class Stage
 		return solved;
 	}
 
-	// Draws stage on game panel
+	// Gets frog in GamePanel to follow path of parabola
+	public void drawJump(int frogXIn, int frogYIn)
+	{
+		int frogYLimit = 355-20*point2X;
+
+		long expectedtime = System.currentTimeMillis();
+		long sleeptime = 500;
+
+		for(int i=200; i<=420; i++)
+		{
+			// Wait for a secound
+			while(System.currentTimeMillis() < expectedtime) {}
+   			expectedtime += sleeptime;
+			
+			System.out.println("i = " + i);
+			
+			frogXIn++;
+
+			if(i<=310)
+				frogYIn+=(frogYLimit/110);
+			else
+				frogYIn-=(frogYLimit/110);
+
+			gpRef.setFrogX(frogXIn);
+			gpRef.setFrogY(frogYIn);
+
+			// Pause for 500 miliseconds
+			/*try 
+			{
+            	System.out.println("sleeping");
+				Thread.currentThread().sleep(500);
+				System.out.println("done sleeping");
+        	} 
+			catch (InterruptedException e) 
+			{
+           		System.out.println("ERROR: Interruption while thread tried to sleep...");
+            	e.printStackTrace();
+			}*/
+
+			gpRef.repaint();
+		}
+	}
+
+	// Draws problem or parabola on GamePanel
 	public void draw(Graphics g) 
 	{
 		g.setColor(Color.RED);

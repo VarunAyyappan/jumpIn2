@@ -13,8 +13,7 @@ import java.awt.Color;    // Classes for Color, Graphics
 import java.awt.Font;
 import java.awt.Graphics;
 
-import java.math.BigDecimal;       // Class for BigDecimal
-import java.math.RoundingMode;
+import java.text.DecimalFormat;   // Class for DecimalFormat
 
 public class Stage 
 {	
@@ -64,6 +63,11 @@ public class Stage
 	{
 		return solved;
 	}
+
+	public String getAnswer()
+	{
+		return answer;
+	}
 	
 	// Create basis of problems
 	public void createPoints()
@@ -89,10 +93,9 @@ public class Stage
 		if(difLevel==1 || difLevel==2)
 		{
 			a = ((double)point1Y-point2Y)/(((double)point1X-point2X)*((double)point1X-point2X));
+			a = roundToHundreth(a);
 			answer = "y="+a+"(x-"+point2X +")^2+"+point2Y;
-
-			a = roundToHundreath(a);
-
+			
 			System.out.println(answer);
 		}
 		else if(difLevel == 3)
@@ -101,20 +104,22 @@ public class Stage
 			b = 2*point2X*a;
 			c = point2Y+(point2X*point2X);
 
-			a = roundToHundreath(a);
-			b = roundToHundreath(b);
-			c = roundToHundreath(c);
+			a = roundToHundreth(a);
+			b = roundToHundreth(b);
+			c = roundToHundreth(c);
 
 			answer = "y="+a+"x^2-"+b+"x+"+point2Y;
 		}
 	}
 
-	// Rounds digits to nearest hundreath
-	public static double roundToHundreath(double value) {
-    	BigDecimal bd = new BigDecimal(""+value);
-    	bd = bd.setScale(2, RoundingMode.HALF_UP);
-    	value = bd.doubleValue();
-		return value;
+	// Rounds digits to nearest hundreth place
+	public static double roundToHundreth(double value) 
+	{
+    	DecimalFormat df = new DecimalFormat("#.00");
+    	String formattedValue = df.format(value);
+    	
+    	value = Double.parseDouble(formattedValue);
+    	return value;
 	}
 
 	// Check answer with string passed in
@@ -146,10 +151,7 @@ public class Stage
 			kIn = Integer.parseInt(withKIn);
 
 			if(a==aIn && point2X==hIn && point2Y==kIn)
-			{
 				solved = true;
-				return solved;
-			}
 		}
 		else if(difLevel==3 || difLevel==4)
 		{
@@ -172,10 +174,7 @@ public class Stage
 			cIn = Double.parseDouble(withBIn);
 
 			if(a==aIn && b==hIn && c==kIn)
-			{
 				solved = true;
-				return solved;
-			}
 		}
 
 		return solved;
@@ -189,20 +188,20 @@ public class Stage
 		g.setFont(font);
 
 		g.fillOval(290, 355, dotRadius, dotRadius);
-		g.fillOval(355, 355-30*point2X, dotRadius, dotRadius);
+		g.fillOval(355, 355-20*point2X, dotRadius, dotRadius);
 		g.fillOval(420, 355, dotRadius, dotRadius);
 		
 		if(!solved)
 		{
 			g.drawString("("+point1X+","+point1Y+")", 300, 345);
-			g.drawString("("+point2X+","+point2Y+")", 355, 355-30*point2X-10);
+			g.drawString("("+point2X+","+point2Y+")", 355, 355-20*point2X-10);
 			
 			if(difLevel==1 || difLevel==4)
 				g.drawString("("+point3X+","+point3Y+")", 420, 345);
 		}
 		else
 		{
-			g.drawArc(300, 360-30*point2X, 120, 60*point2X, 0, 180);
+			g.drawArc(300, 360-20*point2X, 120, 40*point2X, 0, 180);
 		}
 	}
 

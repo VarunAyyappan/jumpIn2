@@ -25,11 +25,12 @@ public class JumpIn
 	private JPanel mgPanel;        // In jiPanel
 	private GamePanel gPanel;      // In mgPanel
 	private InfoPanel iPanel;      // In mgPanel
-	private DirectionsPanel dPanel;   // In jiPanel
+	private DirectionsPanel dPanel;  // In jiPanel
 	private PauseMenu pmPanel;      // In jiPanel
+	private SaveProgress spPanel;    // In spPanel 
 	private CardLayout cards;
 	
-	private final String MAIN_MENU, GAME_PANEL, DIRECTION_PANEL, PAUSE_MENU;  // For CardLayout
+	private final String MAIN_MENU, GAME_PANEL, DIRECTION_PANEL, PAUSE_MENU, SAVE_PANEL;  // For CardLayout
 	private int sizeX, sizeY;   // Size of frame
 	
 	// Initialize field variables
@@ -46,12 +47,14 @@ public class JumpIn
 		iPanel = new InfoPanel(gPanel, sizeX, sizeY);
 		dPanel = new DirectionsPanel(this, sizeX, sizeY);
 		pmPanel = new PauseMenu(this);
+		spPanel = new SaveProgress(this, iPanel, sizeX, sizeY);
 		cards = new CardLayout();
 		
 		MAIN_MENU = "Card with Main Menu";
 		GAME_PANEL = "Card with GamePanel";
 		DIRECTION_PANEL = "Card with Directions";
 		PAUSE_MENU = "Card with Pasue Menu";
+		SAVE_PANEL = "Card with Save Screen";
 	}
 	
 	// Instantiates instance of class and calls run
@@ -75,11 +78,12 @@ public class JumpIn
 		jiPanel.add(mgPanel, GAME_PANEL);
 		jiPanel.add(dPanel, DIRECTION_PANEL);
 		jiPanel.add(pmPanel, PAUSE_MENU);
+		jiPanel.add(spPanel, SAVE_PANEL);
 		
 		mgPanel.setLayout(null);
 		mgPanel.add(gPanel);
 		mgPanel.add(iPanel);
-		
+
 		jiFrame.setVisible(true);
 	}
 	
@@ -100,6 +104,11 @@ public class JumpIn
 		}
 		else if(selection == 4)
 			cards.show(jiPanel, PAUSE_MENU);
+		else if(selection == 5)
+		{
+			cards.show(jiPanel, SAVE_PANEL);
+			spPanel.repaint();
+		}
 	}
 	
 }

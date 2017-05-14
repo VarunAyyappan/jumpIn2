@@ -10,7 +10,7 @@
  * the input for the math problems.
  * 
  * Testing:
- * Should Work: Text input via JTextField, Click to shift focus to GamePanel
+ * Should Work: Text input via JTextField
  * Shouldn't Work: Anything else
  */
 
@@ -18,17 +18,15 @@ import java.awt.Color;     // Classes for Color, Font, Graphics
 import java.awt.Font;
 import java.awt.Graphics;
 
-import java.awt.event.ActionEvent;    // Classes for ActionListener, MouseListener
+import java.awt.event.ActionEvent;    // Classes for ActionListener
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 import javax.swing.JButton;    // Classes for JButton, JPanel, JTextField, Timer
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.Timer;
 
-public class InfoPanel extends JPanel implements MouseListener, ActionListener
+public class InfoPanel extends JPanel implements ActionListener
 {
 	private GamePanel gpRef;
 	private RefreshPanels rp;
@@ -37,11 +35,14 @@ public class InfoPanel extends JPanel implements MouseListener, ActionListener
 	private int difLevel;
 	private int lives;
 	private int trys;
+	private int attemptedProblems;
+	private int finishedProblems;
 	private int rightFirstTime;
 	private int sizeX;
 	private int dotRadius;
 	private boolean mistakeMsg;
 	private boolean praiseMsg;
+	private boolean lossLife;
 	
 	// Initialize field variables and change panel settings
 	public InfoPanel(GamePanel gpRefIn, int sizeXIn, int sizeYIn) 
@@ -53,11 +54,14 @@ public class InfoPanel extends JPanel implements MouseListener, ActionListener
 		difLevel = currentStage.getDifLevel();
 		lives = 3;
 		trys = 0;
+		attemptedProblems = 0;
+		finishedProblems = 0;
 		rightFirstTime = 0;
 		sizeX = sizeXIn;
 		dotRadius = 20;
 		mistakeMsg = false;
 		praiseMsg = false;
+		lossLife = false;
 
 		add(answers);
 		answers.addActionListener(this);
@@ -69,10 +73,39 @@ public class InfoPanel extends JPanel implements MouseListener, ActionListener
 		answers.setLocation(sizeX/3*2,100);
 		answers.setSize(300, 50);
 	}
-
+	 
+	 // Some getter methods
 	public int getRightFirstTime()
 	{
 		return rightFirstTime;
+	}
+
+	public int getAttemptedProblems()
+	{
+		return attemptedProblems;
+	}
+
+	public int getFinishedProblems()
+	{
+		return finishedProblems;
+	}
+
+	public boolean getIfLost()
+	{
+		// uses the amount of lives remaing to check if player lost
+		if(lives == -1)
+			return true;
+		else
+			return false;
+	}
+
+	// Shifts the problem and the stage
+	public void shiftToNextStage() 
+	{
+		gpRef.shiftStage(rightFirstTime, true);
+		currentStage = gpRef.getCurrentStageObj();
+		difLevel = currentStage.getDifLevel();
+		answers.setText("");
 	}
 
 	// Graphics happens here
@@ -88,7 +121,7 @@ public class InfoPanel extends JPanel implements MouseListener, ActionListener
 		g.drawString(""+difLevel, 10, 50);
 		g.drawString("Lives:", 250, 30);
 		g.drawString(""+lives, 250, 50);
-		g.drawString("Trys:", 350, 30);
+		g.drawString("Tries:", 350, 30);
 
 		if(trys==0)
 		{
@@ -122,27 +155,26 @@ public class InfoPanel extends JPanel implements MouseListener, ActionListener
 		else if(difLevel==3 || difLevel==4)
 			g.drawString("y=ax^2+bx+c form.", sizeX/3*2-15, 60);
 
-		g.drawString("Round decimals to hundreath place.", sizeX/3*2-15, 85);
+		g.drawString("Round decimals to hundreth place.", sizeX/3*2-15, 85);
 
+		// Rest for printing messages relavent to player
 		g.setFont(msgFont);
-		if(mistakeMsg){
-			g.drawString("Try again. Press p and go to", 10, 100);
-			g.drawString("directions is help is needed.", 10, 150);
+
+		if(mistakeMsg)
+		{
+			g.drawString("Try again. Press p and go to", 10, 110);
+			g.drawString("directions if help is needed.", 10, 160);
 		}
 		else if(praiseMsg)
-			g.drawString("Good Job!", 10, 100);
+			g.drawString("Good Job!", 10, 110);
+		else if(lossLife)
+		{
+			g.drawString("Sorry, the answer was", 10, 110);
+			g.drawString(currentStage.getAnswer()+"...", 10, 160);
+		}
+		else
+			g.drawString("Messages will appear here!", 10, 150);
 	}
-
-	// MouseListener methods
-	// Trying to use this for focus switch, not working right now...
-	public void mousePressed(MouseEvent e) 
-	{ 
-		gpRef.requestFocusInWindow();
-	}
-    public void mouseReleased(MouseEvent e) {}
-    public void mouseEntered(MouseEvent e) {}
-    public void mouseExited(MouseEvent e) {}
-    public void mouseClicked(MouseEvent e) {}
 
 	// From ActionListener
 	public void actionPerformed(ActionEvent e) 
@@ -153,22 +185,37 @@ public class InfoPanel extends JPanel implements MouseListener, ActionListener
 			{
 				if(trys==0)
 					rightFirstTime++;
-
+				
+				finishedProblems++;
+				attemptedProblems++;
 				trys = 0;
-				gpRef.setIsSolved(true);
-				praiseMsg = true;
 				mistakeMsg = false;
+				lossLife = false;
+				praiseMsg = true;
 			}
 			else
 			{
-				answers.setText(answers.getText());
 				trys++;
+				lossLife = false;
 				praiseMsg = false;
 				mistakeMsg = true;
 
 				if(trys==3)
 				{
 					lives--;
+					attemptedProblems++;
+					mistakeMsg = false;
+					lossLife = true;
+					trys=0;
+
+					if(lives==-1)
+						gpRef.gameOver();
+					else
+					{
+						gpRef.shiftStage(rightFirstTime, false);
+						currentStage = gpRef.getCurrentStageObj();
+						difLevel = currentStage.getDifLevel();
+					}
 				}
 			}
 
@@ -203,5 +250,9 @@ class RefreshPanels implements ActionListener
 	{
 		gpRef.repaint();
 		ipRef.repaint();
+
+		// If the player reached end of level go to next one
+		if(gpRef.getIfStageOver())
+			ipRef.shiftToNextStage();
 	}
 }

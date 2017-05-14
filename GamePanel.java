@@ -39,9 +39,9 @@ public class GamePanel extends JPanel implements KeyListener
 	private int boundary;
 	private Stage[] stages;
 	private int currentStage;
-	private boolean isSolved;
-	private boolean gameOver;
 	private String input;
+
+	// For surronding level design
 	
 	// For acess to pause menu
 	private JumpIn jiRef;
@@ -52,15 +52,13 @@ public class GamePanel extends JPanel implements KeyListener
 		frogImgName = "22494_Flipped.png";
 		getMyImage();
 		frogX = 0;
-		frogY = 300;
+		frogY = 305;
 		vx = 10;
 		vy = 10;
 		
 		boundary = sizeXIn;
 		stages = new Stage[40];
-		isSolved = false;
-		gameOver = false;
-		
+
 		for(int i=0;i<stages.length;i++)
 		{
 			if(i<10)
@@ -102,25 +100,42 @@ public class GamePanel extends JPanel implements KeyListener
 	public void resetFrog() 
 	{
 		frogX = 0;
-		frogY = 300;
+		frogY = 305;
 		requestFocusInWindow();
 	}
 	
-	// Some getter and setter methods
-	public void setIsSolved(boolean isSolvedIn)
-	{
-		isSolved = isSolvedIn;
-	}
-
+	// Get current stage reference (meant for InfoPanel.java)
 	public Stage getCurrentStageObj() 
 	{
 		return stages[currentStage];
 	}
 
-	public void setCurrentStage(int stageNum)
+	// Get if frog is at end of stage (meant for InfoPanel.java)
+	public boolean getIfStageOver()
 	{
-		currentStage = stageNum;
+		if(frogX+100>=boundary)
+			return true;
+		else
+			return false;
+	}
+
+	// Shift to next stage based on number of problems solved on 1st attempt
+	public void shiftStage(int rightFirstTimeIn, boolean isCorrect)
+	{
+		if(rightFirstTimeIn == 8)
+			gameOver();
+		else if(rightFirstTimeIn>0 && rightFirstTimeIn%2==0 && isCorrect)
+			currentStage = currentStage-(currentStage%10)+10;
+		else
+			currentStage++;
+
 		resetFrog();
+	}
+
+	// Goes to SaveProgress panel by calling shift method in JumpIn
+	public void gameOver()
+	{
+		jiRef.shift(5, 2);
 	}
 
 	// Graphics happens here
@@ -129,34 +144,45 @@ public class GamePanel extends JPanel implements KeyListener
 		super.paintComponent(g);
 		g.drawImage(frogImg, frogX, frogY, frogX+95, frogY+65, 340, 0, 435, 65, this);
 
-		g.setColor(Color.GREEN);
-		g.fillRect(0, 365, boundary, 300);
-		
-		g.setColor(Color.BLACK);
-		g.fillRect(300, 365, 120, 300);
-		
+		if(stages[currentStage].getDifLevel()==1)
+		{
+			g.setColor(Color.GREEN);
+			g.fillRect(0, 365, boundary, 300);
+			g.setColor(Color.BLACK);
+			g.fillRect(300, 365, 120, 300);
+			
+		}
+		else if(stages[currentStage].getDifLevel()==2)
+		{
+
+		}
+		else if(stages[currentStage].getDifLevel()==3)
+		{
+			
+		}
+		else if(stages[currentStage].getDifLevel()==4)
+		{
+			// level 4 stage here
+		}
+
 		stages[currentStage].draw(g);
 	}
-	
+
 	// KeyListener methods
 	public void keyPressed(KeyEvent e) 
 	{
 		int code = e.getKeyCode();
 		
-		if(!gameOver)
-		{
-			if((code==e.VK_A || code==e.VK_UP) && frogX>0)
+			if((code==e.VK_A || code==e.VK_LEFT) && frogX>0)
 			frogX-=vx;
-			else if((code==e.VK_D || code==e.VK_DOWN) && frogX+95<boundary)
+			else if((code==e.VK_D || code==e.VK_RIGHT) && frogX+95<boundary)
 			{
-				if(isSolved)
-					frogX+=vx;
-				else if(!isSolved && frogX<=200)
+				// If problem isn't' solved, player shouldn't be able to skip it.
+				if(stages[currentStage].getSolved() || frogX<=200)
 					frogX+=vx;
 			}
 			else if(code==e.VK_P)
 				jiRef.shift(4, 2);
-		}
 	}
 	public void keyTyped(KeyEvent e) {}
 	public void keyReleased(KeyEvent e) {}

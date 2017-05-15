@@ -188,10 +188,6 @@ public class Problem
 			bIn = Double.parseDouble(withBIn);
 			cIn = Double.parseDouble(withCIn);
 
-			System.out.println(aIn);
-			System.out.println(bIn);
-			System.out.println(cIn);
-
 			if(a==aIn && b==bIn && c==cIn)
 				solved = true;
 		}

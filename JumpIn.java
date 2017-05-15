@@ -39,7 +39,7 @@ public class JumpIn
 		sizeX = 1200;
 		sizeY = 700;
 		
-		jiFrame = new JFrame();
+		jiFrame = new JFrame("Jump In!");
 		jiPanel = new JPanel();
 		mmPanel = new MainMenu(this);
 		mgPanel = new JPanel();
@@ -83,6 +83,8 @@ public class JumpIn
 		mgPanel.setLayout(null);
 		mgPanel.add(gPanel);
 		mgPanel.add(iPanel);
+		
+		gPanel.resetFrog();
 
 		jiFrame.setVisible(true);
 	}
@@ -93,13 +95,13 @@ public class JumpIn
 		if(selection == 1)
 		{
 			cards.show(jiPanel, MAIN_MENU);
+			gPanel.createStages();
 			gPanel.resetFrog();
 		}
 		else if(selection == 2)
 		{
 			cards.show(jiPanel, GAME_PANEL);
 			gPanel.requestFocus();
-			gPanel.resetFrog();
 		}
 		else if(selection == 3)
 		{

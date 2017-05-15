@@ -147,12 +147,12 @@ public class Stage
 			triangleXPoints = new int[3];
 			triangleYPoints = new int[3];
 
-			triangleXPoints[0] = boundaryIn-265;
+			triangleXPoints[0] = boundaryIn-100;
 			triangleXPoints[1] = boundaryIn;
 			triangleXPoints[2] = boundaryIn;
 
 			triangleYPoints[0] = 365;
-			triangleYPoints[1] = 100;
+			triangleYPoints[1] = 465;
 			triangleYPoints[2] = 365;
 
 			isGoingUp = false;

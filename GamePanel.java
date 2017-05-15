@@ -58,21 +58,9 @@ public class GamePanel extends JPanel implements KeyListener
 		
 		boundary = sizeXIn;
 		bottom = sizeYIn;
-		stages = new Stage[40];
-
-		for(int i=0;i<stages.length;i++)
-		{
-			if(i<10)
-				stages[i]= new Stage(this, 3, boundary, bottom, true);
-			else if(i<20)
-				stages[i]= new Stage(this, 2, boundary, bottom, true);
-			else if(i<30)
-				stages[i]= new Stage(this, 3, boundary, bottom, true);
-			else
-				stages[i]= new Stage(this, 4, boundary, bottom, true);
-		}
-
-		currentStage = 0;
+		
+		createStages();
+		
 		input = "";
 		
 		jiRef = jiRefIn;
@@ -82,6 +70,27 @@ public class GamePanel extends JPanel implements KeyListener
 		setBackground(Color.CYAN);
 		addKeyListener(this);
 	}
+	
+	// Fill up stages array
+	public void createStages()
+	{
+		stages = new Stage[40];
+
+		for(int i=0;i<stages.length;i++)
+		{
+			if(i<10)
+				stages[i]= new Stage(this, 1, boundary, bottom, true);
+			else if(i<20)
+				stages[i]= new Stage(this, 2, boundary, bottom, true);
+			else if(i<30)
+				stages[i]= new Stage(this, 3, boundary, bottom, true);
+			else
+				stages[i]= new Stage(this, 4, boundary, bottom, true);
+		}
+
+		currentStage = 0;
+	}
+	
 	
 	// Gets image, sends error message it it failed
 	public void getMyImage()

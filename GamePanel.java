@@ -63,7 +63,7 @@ public class GamePanel extends JPanel implements KeyListener
 		for(int i=0;i<stages.length;i++)
 		{
 			if(i<10)
-				stages[i]= new Stage(this, 1, boundary, bottom, true);
+				stages[i]= new Stage(this, 3, boundary, bottom, true);
 			else if(i<20)
 				stages[i]= new Stage(this, 2, boundary, bottom, true);
 			else if(i<30)

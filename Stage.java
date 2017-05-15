@@ -136,13 +136,31 @@ public class Stage
 		{
 			triangleXPoints = null;
 			triangleYPoints = null;
+
+			problemAreaX1 = 200;
+			problemAreaX2 = 600;
+
+			origY = 305;
 		}
 		else if(difLevel == 4)
 		{
 			triangleXPoints = new int[3];
 			triangleYPoints = new int[3];
 
+			triangleXPoints[0] = boundaryIn-265;
+			triangleXPoints[1] = boundaryIn;
+			triangleXPoints[2] = boundaryIn;
+
+			triangleYPoints[0] = 365;
+			triangleYPoints[1] = 100;
+			triangleYPoints[2] = 365;
+
 			isGoingUp = false;
+
+			problemAreaX1 = 200;
+			problemAreaX2 = 600;				
+
+			origY = 305;
 		}
 	}
 
@@ -172,7 +190,10 @@ public class Stage
 		}
 		else if(difLevel==4)
 		{
-			// level 4 stage here
+			g.setColor(Color.BLACK);
+			g.fillRect(problemAreaX1, 365, problemAreaX2-problemAreaX1, 300);
+			g.setColor(Color.CYAN);
+			g.fillPolygon(triangleXPoints, triangleYPoints, 3);
 		}
     }
 

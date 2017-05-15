@@ -96,21 +96,30 @@ public class Problem
 			a = ((double)point1Y-point2Y)/(((double)point1X-point2X)*((double)point1X-point2X));
 			a = roundToHundreth(a);
 			answer = "y="+a+"(x-"+point2X +")^2+"+point2Y;
-			
-			System.out.println(answer);
 		}
 		else if(difLevel == 3)
 		{
 			a = ((double)point1Y-point2Y)/(((double)point1X-point2X)*((double)point1X-point2X));
-			b = 2*point2X*a;
+			b = 2*(-point2X)*a;
 			c = point2Y+(point2X*point2X);
 
 			a = roundToHundreth(a);
 			b = roundToHundreth(b);
 			c = roundToHundreth(c);
 
-			answer = "y="+a+"x^2-"+b+"x+"+point2Y;
+			if(b<0)
+				answer = "y="+a+"x^2"+b+"x+"+c;
+			else
+			{
+				answer = "y="+a+"x^2+"+b+"x+"+c;
+			}
 		}
+		else if(difLevel == 4) 
+		{
+			// Insert dif level 4 solution here
+		}
+
+		System.out.println(answer);
 	}
 
 	// Rounds digits to nearest hundreth place
@@ -158,23 +167,32 @@ public class Problem
 		{
 			answerIn = answerIn.trim();
 			withAIn = answerIn.substring(answerIn.indexOf("=")+1, answerIn.indexOf("x"));
-			withBIn = answerIn.substring(answerIn.indexOf("+")+1, answerIn.lastIndexOf("x"));
+
+			if(answerIn.indexOf("+")!=answerIn.lastIndexOf("+"))
+				withBIn = answerIn.substring(answerIn.indexOf("+")+1, answerIn.lastIndexOf("x"));
+			else
+				withBIn = answerIn.substring(answerIn.indexOf("-"), answerIn.lastIndexOf("x"));
+
 			withCIn = answerIn.substring(answerIn.lastIndexOf("+")+1, answerIn.length());
 
 			if(withAIn.indexOf(".")==-1)
 				withAIn = withAIn + ".0";
 
 			if(withBIn.indexOf(".")==-1)
-				withAIn = withAIn + ".0";
+				withBIn = withBIn + ".0";
 
 			if(withCIn.indexOf(".")==-1)
-				withAIn = withAIn + ".0";
+				withCIn = withCIn + ".0";
 
 			aIn = Double.parseDouble(withAIn);
 			bIn = Double.parseDouble(withBIn);
-			cIn = Double.parseDouble(withBIn);
+			cIn = Double.parseDouble(withCIn);
 
-			if(a==aIn && b==hIn && c==kIn)
+			System.out.println(aIn);
+			System.out.println(bIn);
+			System.out.println(cIn);
+
+			if(a==aIn && b==bIn && c==cIn)
 				solved = true;
 		}
 

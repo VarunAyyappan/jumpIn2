@@ -23,6 +23,7 @@ public class Problem
 	private int point1X, point1Y;
 	private int point2X, point2Y;
 	private int point3X, point3Y;
+	private int problemAreaX1, problemAreaX2;
 	private double a;
 	private double b;
 	private double c;
@@ -35,7 +36,7 @@ public class Problem
 	private GamePanel gpRef;
 
 	// Initialize field vars
-	public Problem(GamePanel gpRefIn, Stage sRefIn, int difLevelIn, boolean isUpIn)
+	public Problem(GamePanel gpRefIn, Stage sRefIn, int difLevelIn, int problemAreaX1In, int problemAreaX2In,boolean isUpIn)
 	{
 		difLevel = difLevelIn;
 		isUp = isUpIn;
@@ -45,6 +46,8 @@ public class Problem
 		point2Y = 0;
 		point3X = 0;
 		point3Y = 0;
+		problemAreaX1 = problemAreaX1In;
+		problemAreaX2 = problemAreaX2In;
 		answer = "";
 		dotRadius = 10;
 		solved = false;
@@ -181,11 +184,8 @@ public class Problem
 	// Draws frog ascent in jump
 	public void drawJumpUp(int frogXIn, int frogYIn)
 	{
-		int frogYLimit = 355-20*point2Y;
-		int origFrogY = frogYIn;	
-		
-		frogXIn = 310;
-		frogYIn = frogYLimit;
+		frogXIn = (problemAreaX2-problemAreaX1)/2+problemAreaX1-40;
+		frogYIn = 355-20*point2Y;
 
 		gpRef.setFrogX(frogXIn);
 		gpRef.setFrogY(frogYIn);
@@ -196,8 +196,8 @@ public class Problem
 	// Draws frog descent in jump
 	public void drawJumpDown(int origFrogYIn)
 	{
-		int frogX = 420;
-		
+		int frogX = problemAreaX2;
+
 		gpRef.setFrogX(frogX);
 		gpRef.setFrogY(origFrogYIn);
 
@@ -211,21 +211,21 @@ public class Problem
 		Font font = new Font("SansSerif", Font.BOLD, 20);
 		g.setFont(font);
 
-		g.fillOval(290, 355, dotRadius, dotRadius);
-		g.fillOval(355, 355-20*point2Y, dotRadius, dotRadius);
-		g.fillOval(420, 355, dotRadius, dotRadius);
+		g.fillOval(problemAreaX1-10, 355, dotRadius, dotRadius);
+		g.fillOval((problemAreaX2-problemAreaX1)/2+problemAreaX1, 355-20*point2Y, dotRadius, dotRadius);
+		g.fillOval(problemAreaX2, 355, dotRadius, dotRadius);
 		
 		if(!solved)
 		{
-			g.drawString("("+point1X+","+point1Y+")", 300, 345);
-			g.drawString("("+point2X+","+point2Y+")", 355, 355-20*point2Y-10);
+			g.drawString("("+point1X+","+point1Y+")", problemAreaX1-10, 345);
+			g.drawString("("+point2X+","+point2Y+")", (problemAreaX2-problemAreaX1)/2+problemAreaX1, 355-20*point2Y-10);
 			
 			if(difLevel==1 || difLevel==4)
-				g.drawString("("+point3X+","+point3Y+")", 420, 345);
+				g.drawString("("+point3X+","+point3Y+")", problemAreaX2, 345);
 		}
 		else
 		{
-			g.drawArc(300, 360-20*point2Y, 120, 40*point2Y, 0, 180);
+			g.drawArc(problemAreaX1, 360-20*point2Y, problemAreaX2-problemAreaX1, 40*point2Y, 0, 180);
 		}
 	}
 

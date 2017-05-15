@@ -21,23 +21,28 @@ public class Stage
 	private Problem problem;
     private int difLevel;
 	private int boundary;
-	private int[] triangleXPoints;
-	private int[] triangleYPoints;
+	private int bottom;
+	private int origY;
+	private int problemAreaX1, problemAreaX2;
+	private int[] triangleXPoints, triangleYPoints;
 	private boolean isGoingUp;    // If triangle is for uphill or downhill section
-	
-	// For checking user input
 	private GamePanel gpRef;
 
 	// Initialize field vars
-	public Stage(GamePanel gpRefIn, int difLevelIn, int boundaryIn, boolean isUpIn)
+	public Stage(GamePanel gpRefIn, int difLevelIn, int boundaryIn, int bottomIn, boolean isUpIn)
 	{
-        problem = new Problem(gpRefIn, this ,difLevelIn, isUpIn);
         difLevel = difLevelIn;
 		boundary = boundaryIn;
-		
+		bottom = bottomIn;
+		problemAreaX1 = 0;
+		problemAreaX2 = 0;
+		origY = 0;
         gpRef = gpRefIn;
-
-		createTrianglePoints(boundary);
+		isGoingUp = false;
+		
+		createPoints(boundary);
+		
+		problem = new Problem(gpRefIn, this ,difLevelIn, problemAreaX1, problemAreaX2,isUpIn);
     }
 
     // Various getter methods
@@ -48,7 +53,17 @@ public class Stage
 
 	public int getOrigY()
 	{
-		return 305;
+		return origY;
+	}
+
+	public int getProblemAreaX1()
+	{
+		return problemAreaX1;
+	}
+
+	public int getProblemAreaX2()
+	{
+		return problemAreaX2;
 	}
 
 	public int getDifLevel()
@@ -74,8 +89,8 @@ public class Stage
 		return isGoingUp;
 	}
 
-	// Create triangle points for uphill/downhill section of stage
-	public void createTrianglePoints(int boundaryIn)
+	// Create various points for stage
+	public void createPoints(int boundaryIn)
 	{
 		if(difLevel ==1)
 		{
@@ -91,13 +106,36 @@ public class Stage
 			triangleYPoints[2] = 365;
 
 			isGoingUp = true;
+
+			problemAreaX1 = 300;
+			problemAreaX2 = 500;
+
+			origY = 305;
 		}
 		else if(difLevel == 2)
 		{
 			triangleXPoints = new int[3];
 			triangleYPoints = new int[3];
+			
+			triangleXPoints[0] = 0;
+			triangleXPoints[1] = 0;
+			triangleXPoints[2] = 100;
+
+			triangleYPoints[0] = 465;
+			triangleYPoints[1] = 365;
+			triangleYPoints[2] = 365;
 
 			isGoingUp = true;
+
+			problemAreaX1 = 300;
+			problemAreaX2 = 500;
+
+			origY = 305;
+		}
+		else if(difLevel == 3)
+		{
+			triangleXPoints = null;
+			triangleYPoints = null;
 		}
 		else if(difLevel == 4)
 		{
@@ -118,15 +156,19 @@ public class Stage
 		{
 			g.fillPolygon(triangleXPoints, triangleYPoints, 3);
 			g.setColor(Color.BLACK);
-			g.fillRect(300, 365, 120, 300);
+			g.fillRect(problemAreaX1, 365, problemAreaX2-problemAreaX1, 300);
 		}
 		else if(difLevel==2)
 		{
-
+			g.setColor(Color.CYAN);
+			g.fillPolygon(triangleXPoints, triangleYPoints, 3);
+			g.setColor(Color.BLACK);
+			g.fillRect(problemAreaX1, 365, problemAreaX2-problemAreaX1, 300);
 		}
 		else if(difLevel==3)
 		{
-			
+			g.setColor(Color.BLACK);
+			g.fillRect(problemAreaX1, 365, problemAreaX2-problemAreaX1, 300);
 		}
 		else if(difLevel==4)
 		{

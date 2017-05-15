@@ -92,13 +92,14 @@ public class JumpIn
 	{
 		if(selection == 1)
 		{
-			gPanel.resetFrog();
 			cards.show(jiPanel, MAIN_MENU);
+			gPanel.resetFrog();
 		}
 		else if(selection == 2)
 		{
 			cards.show(jiPanel, GAME_PANEL);
 			gPanel.requestFocus();
+			gPanel.resetFrog();
 		}
 		else if(selection == 3)
 		{

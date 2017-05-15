@@ -117,10 +117,13 @@ public class InfoPanel extends JPanel implements ActionListener
 		Font msgFont = new Font("SansSerif", Font.BOLD, 40);
 		g.setFont(normFont);
 
+		// Problem difficulty and number of lives remaining
 		g.drawString("Problem Difficulty:", 10, 30);
 		g.drawString(""+difLevel, 10, 50);
 		g.drawString("Lives:", 250, 30);
 		g.drawString(""+lives, 250, 50);
+		
+		// Uses filled and unfilled circles to show amount of tries remaining
 		g.drawString("Tries:", 350, 30);
 
 		if(trys==0)
@@ -148,14 +151,19 @@ public class InfoPanel extends JPanel implements ActionListener
 			g.fillOval(350+(3*dotRadius), 50, 20, 20);
 		}
 
-		g.drawString("Find the equation of the parabola in", sizeX/3*2-15, 35);
+		// Number of Problems left ing current stage
+		g.drawString("Problems Left Untill next Stage:", 450, 30);
+		g.drawString(""+(2-rightFirstTime%2), 450, 50);
+
+		// Prompt input
+		g.drawString("Find the equation of the parabola in", sizeX/3*2-5, 35);
 
 		if(difLevel==1 || difLevel==2)
-			g.drawString("y=a(x-h)^2+k form.", sizeX/3*2-15, 60);
+			g.drawString("y=a(x-h)^2+k form.", sizeX/3*2-5, 60);
 		else if(difLevel==3 || difLevel==4)
-			g.drawString("y=ax^2+bx+c form.", sizeX/3*2-15, 60);
+			g.drawString("y=ax^2+bx+c form.", sizeX/3*2-5, 60);
 
-		g.drawString("Round decimals to hundreth place.", sizeX/3*2-15, 85);
+		g.drawString("Round decimals to hundreth place.", sizeX/3*2-5, 85);
 
 		// Rest for printing messages relavent to player
 		g.setFont(msgFont);
@@ -166,7 +174,7 @@ public class InfoPanel extends JPanel implements ActionListener
 			g.drawString("directions if help is needed.", 10, 160);
 		}
 		else if(praiseMsg)
-			g.drawString("Good Job!", 10, 110);
+			g.drawString("Good job! Keep up the Good Work!", 10, 110);
 		else if(lossLife)
 		{
 			g.drawString("Sorry, the answer was", 10, 110);

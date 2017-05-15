@@ -35,14 +35,13 @@ public class GamePanel extends JPanel implements KeyListener
 	private String frogImgName;
 	private int frogX, frogY, vx, vy;
 	
-	// For the stage and problem
+	// For the stages (which instantiate problem within them)
 	private int boundary;
+	private int bottom;
 	private Stage[] stages;
 	private int currentStage;
 	private String input;
 	private boolean needsToGoDown;
-
-	// For surronding level design
 	
 	// For acess to pause menu
 	private JumpIn jiRef;
@@ -58,18 +57,19 @@ public class GamePanel extends JPanel implements KeyListener
 		vy = 10;
 		
 		boundary = sizeXIn;
+		bottom = sizeYIn;
 		stages = new Stage[40];
 
 		for(int i=0;i<stages.length;i++)
 		{
 			if(i<10)
-				stages[i]= new Stage(this, 1, boundary, true);
+				stages[i]= new Stage(this, 1, boundary, bottom, true);
 			else if(i<20)
-				stages[i]= new Stage(this, 2, boundary, true);
+				stages[i]= new Stage(this, 2, boundary, bottom, true);
 			else if(i<30)
-				stages[i]= new Stage(this, 3, boundary, true);
+				stages[i]= new Stage(this, 3, boundary, bottom, true);
 			else
-				stages[i]= new Stage(this, 4, boundary, true);
+				stages[i]= new Stage(this, 4, boundary, bottom, true);
 		}
 
 		currentStage = 0;
@@ -99,9 +99,18 @@ public class GamePanel extends JPanel implements KeyListener
 	
 	// Resets Frogs position to the beginning position
 	public void resetFrog() 
-	{
-		frogX = 0;
-		frogY = stages[currentStage].getOrigY();
+	{	
+		if(stages[currentStage].getDifLevel()==2)
+		{
+			frogX = 10;
+			frogY = 400;
+		}
+		else
+		{
+			frogX = 0;	
+			frogY = stages[currentStage].getOrigY();				
+		}
+
 		requestFocusInWindow();
 	}
 	
@@ -180,27 +189,30 @@ public class GamePanel extends JPanel implements KeyListener
 				frogX-=vx;
 
 				// Frog shouldn't walk back and fall into pit
-				if(stages[currentStage].getSolved() && frogX>400 && frogX<420)
+				if(stages[currentStage].getSolved() && frogX>stages[currentStage].getProblemAreaX1() && frogX<stages[currentStage].getProblemAreaX2())
 					frogX = 420;
 				
 				// If frog is on hill, is should move up/down
 				if(stages[currentStage].getIfOnHill(frogX))
 				{
 					if(stages[currentStage].getIsGoingUp())
-						frogY++;
+						frogY+=10;
 					else
-						frogY--;
-				}	
+						frogY-=10;
+				}
+				else
+					frogY = stages[currentStage].getOrigY();	
 			}
 			else if((code==e.VK_D || code==e.VK_RIGHT) && frogX+95<boundary)
 			{
-				if(stages[currentStage].getSolved() && frogX>200 && frogX<=210)
+				// Initiate jump when problem is solved;
+				if(stages[currentStage].getSolved() && frogX>stages[currentStage].getProblemAreaX1()-95 && frogX<=stages[currentStage].getProblemAreaX1()+85)
 				{
 					stages[currentStage].getProblem().drawJumpUp(frogX, frogY);
 					needsToGoDown = true;
 				}
 				// If problem isn't' solved, player shouldn't be able to skip it.
-				else if(stages[currentStage].getSolved() || frogX<=200)
+				else if(stages[currentStage].getSolved() || frogX<=stages[currentStage].getProblemAreaX1()-95)
 					frogX+=vx;
 
 				// If frog is on hill, is should move up/down

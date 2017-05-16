@@ -77,7 +77,7 @@ public class GamePanel extends JPanel implements KeyListener
 		boolean isFacingUp = false;
 		stages = new Stage[40];
 
-		for(int i=0;i<stages.length;i++)
+		for(int i=20;i<stages.length;i++)
 		{
 			if(i>=20 && i%2==0)
 				isFacingUp = false;
@@ -94,7 +94,7 @@ public class GamePanel extends JPanel implements KeyListener
 				stages[i]= new Stage(this, 4, boundary, bottom, isFacingUp);
 		}
 
-		currentStage = 0;
+		currentStage = 20;
 	}
 	
 	

@@ -287,7 +287,7 @@ public class Problem
 			if(isUp)
 				g.drawArc(problemAreaX1, 360-20*point2Y, problemAreaX2-problemAreaX1, 40*point2Y, 0, 180);
 			else
-				g.drawArc(problemAreaX1, 360-7*point2Y, problemAreaX2-problemAreaX1, 14*point2Y, 0, 180);
+				g.drawArc(problemAreaX1, 360+7*point2Y, problemAreaX2-problemAreaX1, -14*point2Y, 0, -180);
 		}
 	}
 

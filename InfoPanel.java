@@ -38,6 +38,7 @@ public class InfoPanel extends JPanel implements ActionListener
 	private int attemptedProblems;
 	private int finishedProblems;
 	private int rightFirstTime;
+	private int currentRightFirstTime;
 	private int sizeX;
 	private int dotRadius;
 	private boolean mistakeMsg;
@@ -57,6 +58,7 @@ public class InfoPanel extends JPanel implements ActionListener
 		attemptedProblems = 0;
 		finishedProblems = 0;
 		rightFirstTime = 0;
+		currentRightFirstTime=0;
 		sizeX = sizeXIn;
 		dotRadius = 20;
 		mistakeMsg = false;
@@ -99,18 +101,30 @@ public class InfoPanel extends JPanel implements ActionListener
 			return false;
 	}
 
+	public int getCurrentRightFirstTime()
+	{
+		return currentRightFirstTime;
+	}
+
+	// Set currentRightFirstTime field variable
+	public void setCurrentRightFirstTime(int currentRightFirstTimeIn)
+	{
+		currentRightFirstTime = currentRightFirstTimeIn;
+	}
+
 	// Resets player statistics
 	public void resetPlayerStats()
 	{
 		attemptedProblems = 0;
 		finishedProblems = 0;
 		rightFirstTime = 0;
+		currentRightFirstTime=0;
 	}
 
 	// Shifts the problem and the stage
 	public void shiftToNextStage() 
 	{
-		gpRef.shiftStage(rightFirstTime, true);
+		gpRef.shiftStage(currentRightFirstTime, true);
 		currentStage = gpRef.getCurrentStageObj();
 		difLevel = currentStage.getDifLevel();
 		answers.setText("");
@@ -161,7 +175,7 @@ public class InfoPanel extends JPanel implements ActionListener
 
 		// Number of Problems left ing current stage
 		g.drawString("Problems Left Untill next Stage:", 450, 30);
-		g.drawString(""+(2-rightFirstTime%2), 450, 50);
+		g.drawString(""+(2-currentRightFirstTime%2), 450, 50);
 
 		// Prompt input
 		g.drawString("Find the equation of the parabola in", sizeX/3*2-5, 35);
@@ -200,7 +214,10 @@ public class InfoPanel extends JPanel implements ActionListener
 			if(currentStage.getProblem().checkAnswer(answers.getText()))
 			{
 				if(trys==0)
+				{
 					rightFirstTime++;
+					currentRightFirstTime++;
+				}
 				
 				finishedProblems++;
 				attemptedProblems++;
@@ -228,9 +245,7 @@ public class InfoPanel extends JPanel implements ActionListener
 						gpRef.gameOver();
 					else
 					{
-						gpRef.shiftStage(rightFirstTime, false);
-						currentStage = gpRef.getCurrentStageObj();
-						difLevel = currentStage.getDifLevel();
+						shiftToNextStage();
 					}
 				}
 			}
@@ -269,7 +284,12 @@ class RefreshPanels implements ActionListener
 
 		// If the player reached end of level go to next one
 		if(gpRef.getIfStageOver())
+		{
 			ipRef.shiftToNextStage();
+
+			if(ipRef.getCurrentRightFirstTime()==2)
+				 ipRef.setCurrentRightFirstTime(0);
+		}
 
 		// If jump animation needs to continue
 		if(gpRef.getNeedsToGoDown())

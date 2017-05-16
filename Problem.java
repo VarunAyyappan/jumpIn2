@@ -205,11 +205,20 @@ public class Problem
 			withAIn = answerIn.substring(answerIn.indexOf("=")+1, answerIn.indexOf("x"));
 
 			if(answerIn.indexOf("+")!=answerIn.lastIndexOf("+"))
+			{
 				withBIn = answerIn.substring(answerIn.indexOf("+")+1, answerIn.lastIndexOf("x"));
+				withCIn = answerIn.substring(answerIn.lastIndexOf("+")+1, answerIn.length());
+			}
+			else if(answerIn.lastIndexOf("+")<answerIn.lastIndexOf("x"))
+			{
+				withBIn = answerIn.substring(answerIn.indexOf("+")+1, answerIn.lastIndexOf("x"));
+				withCIn = answerIn.substring(answerIn.lastIndexOf("-"), answerIn.length());
+			}
 			else
-				withBIn = answerIn.substring(answerIn.indexOf("-"), answerIn.lastIndexOf("x"));
-
-			withCIn = answerIn.substring(answerIn.lastIndexOf("+")+1, answerIn.length());
+			{
+				withBIn = answerIn.substring(answerIn.lastIndexOf("-"), answerIn.lastIndexOf("x"));
+				withCIn = answerIn.substring(answerIn.lastIndexOf("+"), answerIn.length());
+			}
 
 			if(withAIn.indexOf(".")==-1)
 				withAIn = withAIn + ".0";
@@ -235,7 +244,11 @@ public class Problem
 	public void drawJumpUp(int frogXIn, int frogYIn)
 	{
 		frogXIn = (problemAreaX2-problemAreaX1)/2+problemAreaX1-40;
-		frogYIn = 355-20*point2Y;
+		
+		if(isUp)
+			frogYIn = 355-20*point2Y;
+		else
+			frogYIn = 355-7*point2Y;
 
 		gpRef.setFrogX(frogXIn);
 		gpRef.setFrogY(frogYIn);
@@ -277,7 +290,7 @@ public class Problem
 			if(isUp)
 				g.drawString("("+point2X+","+point2Y+")", (problemAreaX2-problemAreaX1)/2+problemAreaX1, 355-20*point2Y-10);
 			else
-				g.drawString("("+point2X+","+point2Y+")", (problemAreaX2-problemAreaX1)/2+problemAreaX1, 355-7*point2Y+30);
+				g.drawString("("+point2X+","+point2Y+")", (problemAreaX2-problemAreaX1)/2+problemAreaX1, 355-7*point2Y-10);
 			
 			if(difLevel==1 || difLevel==4)
 				g.drawString("("+point3X+","+point3Y+")", problemAreaX2, 345);

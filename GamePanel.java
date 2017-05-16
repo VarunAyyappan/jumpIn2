@@ -77,7 +77,7 @@ public class GamePanel extends JPanel implements KeyListener
 		boolean isFacingUp = false;
 		stages = new Stage[40];
 
-		for(int i=20;i<stages.length;i++)
+		for(int i=0;i<stages.length;i++)
 		{
 			if(i>=20 && i%2==0)
 				isFacingUp = false;
@@ -94,7 +94,7 @@ public class GamePanel extends JPanel implements KeyListener
 				stages[i]= new Stage(this, 4, boundary, bottom, isFacingUp);
 		}
 
-		currentStage = 20;
+		currentStage = 0;
 	}
 	
 	
@@ -166,9 +166,9 @@ public class GamePanel extends JPanel implements KeyListener
 	// Shift to next stage based on number of problems solved on 1st attempt
 	public void shiftStage(int rightFirstTimeIn, boolean isCorrect)
 	{
-		if(rightFirstTimeIn == 8)
+		if(rightFirstTimeIn == 2 && stages[currentStage].getDifLevel()==4)
 			gameOver();
-		else if(rightFirstTimeIn>0 && rightFirstTimeIn%2==0 && isCorrect)
+		else if(rightFirstTimeIn>0 && rightFirstTimeIn==2 && isCorrect)
 			currentStage = currentStage-(currentStage%10)+10;
 		else
 			currentStage++;

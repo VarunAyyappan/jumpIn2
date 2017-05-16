@@ -74,18 +74,24 @@ public class GamePanel extends JPanel implements KeyListener
 	// Fill up stages array
 	public void createStages()
 	{
+		boolean isFacingUp = false;
 		stages = new Stage[40];
 
 		for(int i=0;i<stages.length;i++)
 		{
-			if(i<10)
-				stages[i]= new Stage(this, 1, boundary, bottom, true);
-			else if(i<20)
-				stages[i]= new Stage(this, 2, boundary, bottom, true);
-			else if(i<30)
-				stages[i]= new Stage(this, 3, boundary, bottom, true);
+			if(i>=20 && i%2==0)
+				isFacingUp = false;
 			else
-				stages[i]= new Stage(this, 4, boundary, bottom, true);
+				isFacingUp = true;
+			
+			if(i<10)
+				stages[i]= new Stage(this, 1, boundary, bottom, isFacingUp);
+			else if(i<20)
+				stages[i]= new Stage(this, 2, boundary, bottom, isFacingUp);
+			else if(i<30)
+				stages[i]= new Stage(this, 3, boundary, bottom, isFacingUp);
+			else
+				stages[i]= new Stage(this, 4, boundary, bottom, isFacingUp);
 		}
 
 		currentStage = 0;
@@ -199,7 +205,7 @@ public class GamePanel extends JPanel implements KeyListener
 
 				// Frog shouldn't walk back and fall into pit
 				if(stages[currentStage].getSolved() && frogX>stages[currentStage].getProblemAreaX1() && frogX<stages[currentStage].getProblemAreaX2())
-					frogX = 420;
+					frogX = stages[currentStage].getProblemAreaX2();
 				
 				// If frog is on hill, is should move up/down
 				if(stages[currentStage].getIfOnHill(frogX))

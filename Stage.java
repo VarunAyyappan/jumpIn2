@@ -26,6 +26,7 @@ public class Stage
 	private int problemAreaX1, problemAreaX2;
 	private int[] triangleXPoints, triangleYPoints;
 	private boolean isGoingUp;    // If triangle is for uphill or downhill section
+	private boolean isUp;
 	private GamePanel gpRef;
 
 	// Initialize field vars
@@ -39,10 +40,11 @@ public class Stage
 		origY = 0;
         gpRef = gpRefIn;
 		isGoingUp = false;
+		isUp = isUpIn;
 		
 		createPoints(boundary);
 		
-		problem = new Problem(gpRefIn, this ,difLevelIn, problemAreaX1, problemAreaX2,isUpIn);
+		problem = new Problem(gpRefIn, this ,difLevelIn, problemAreaX1, problemAreaX2, isUp);
     }
 
     // Various getter methods
@@ -185,12 +187,20 @@ public class Stage
 		}
 		else if(difLevel==3)
 		{
-			g.setColor(Color.BLACK);
+			if(isUp)
+				g.setColor(Color.BLACK);
+			else
+				g.setColor(Color.BLUE);
+
 			g.fillRect(problemAreaX1, 365, problemAreaX2-problemAreaX1, 300);
 		}
 		else if(difLevel==4)
 		{
-			g.setColor(Color.BLACK);
+			if(isUp)
+				g.setColor(Color.BLACK);
+			else
+				g.setColor(Color.BLUE);
+
 			g.fillRect(problemAreaX1, 365, problemAreaX2-problemAreaX1, 300);
 			g.setColor(Color.CYAN);
 			g.fillPolygon(triangleXPoints, triangleYPoints, 3);

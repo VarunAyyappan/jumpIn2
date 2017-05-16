@@ -97,6 +97,7 @@ public class JumpIn
 			cards.show(jiPanel, MAIN_MENU);
 			gPanel.createStages();
 			gPanel.resetFrog();
+			iPanel.resetPlayerStats();
 		}
 		else if(selection == 2)
 		{

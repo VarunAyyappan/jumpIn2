@@ -99,6 +99,14 @@ public class InfoPanel extends JPanel implements ActionListener
 			return false;
 	}
 
+	// Resets player statistics
+	public void resetPlayerStats()
+	{
+		attemptedProblems = 0;
+		finishedProblems = 0;
+		rightFirstTime = 0;
+	}
+
 	// Shifts the problem and the stage
 	public void shiftToNextStage() 
 	{

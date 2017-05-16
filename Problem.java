@@ -81,10 +81,21 @@ public class Problem
 			point3Y = 0;
 			point2X = (point3X+point1X)/2;
 			point2Y = ((int)(Math.random()*5)+1)*2;
+
+			if(!isUp)
+				point2Y = -1*point2Y;
 		}
 		else if(difLevel == 4)
 		{
-			// Insert difLevel 4 creation here
+			point1X = ((int)(Math.random()*5)+1)*2;
+			point1Y = ((int)(Math.random()*5)+1)*2;
+			point2X = ((int)(Math.random()*5)+1)*2+point1X;
+			point2Y = ((int)(Math.random()*5)+1)*2+point1X;
+			point3X = ((int)(Math.random()*5)+1)*2+point2X;
+			point3Y = ((int)(Math.random()*5)+1)*2;
+
+			if(!isUp)
+				point2Y = -1*point2Y;
 		}
 	}
 
@@ -108,15 +119,40 @@ public class Problem
 			c = roundToHundreth(c);
 
 			if(b<0)
-				answer = "y="+a+"x^2"+b+"x+"+c;
+				answer = "y="+a+"x^2"+b+"x";
 			else
-			{
-				answer = "y="+a+"x^2+"+b+"x+"+c;
-			}
+				answer = "y="+a+"x^2+"+b+"x";
+
+			if(c<0)
+				answer = answer+c;
+			else
+				answer = answer+"+"+c;
 		}
 		else if(difLevel == 4) 
 		{
-			// Insert dif level 4 solution here
+			a = (double)point1Y/((point1X-point2X)*(point1X-point3X)) + point2Y/((point2X-point1X)*(point2X-point3X)) + point3Y/((point3X-point1X)*(point3X-point2X));
+
+			b = (double)-point1Y*(point2X+point3X)/((point1X-point2X)*(point1X-point3X))
+    			-point2Y*(point1X+point3X)/((point2X-point1X)*(point2X-point3X))
+    			-point3Y*(point1X+point2X)/((point3X-point1X)*(point3X-point2X));	
+
+			c = (double)point1Y*point2X*point3X/((point1X-point2X)*(point1X-point3X))
+  				+ point2Y*point1X*point3X/((point2X-point1X)*(point2X-point3X))
+  				+ point3Y*point1X*point2X/((point3X-point1X)*(point3X-point2X));
+
+			a = roundToHundreth(a);
+			b = roundToHundreth(b);
+			c = roundToHundreth(c);
+
+			if(b<0)
+				answer = "y="+a+"x^2"+b+"x";
+			else
+				answer = "y="+a+"x^2+"+b+"x";
+
+			if(c<0)
+				answer = answer+c;
+			else
+				answer = answer+"+"+c;
 		}
 
 		System.out.println(answer);
@@ -226,20 +262,32 @@ public class Problem
 		g.setFont(font);
 
 		g.fillOval(problemAreaX1-10, 355, dotRadius, dotRadius);
-		g.fillOval((problemAreaX2-problemAreaX1)/2+problemAreaX1, 355-20*point2Y, dotRadius, dotRadius);
+
+		if(isUp)
+			g.fillOval((problemAreaX2-problemAreaX1)/2+problemAreaX1, 355-20*point2Y, dotRadius, dotRadius);
+		else
+			g.fillOval((problemAreaX2-problemAreaX1)/2+problemAreaX1, 355-7*point2Y, dotRadius, dotRadius);
+
 		g.fillOval(problemAreaX2, 355, dotRadius, dotRadius);
 		
 		if(!solved)
 		{
 			g.drawString("("+point1X+","+point1Y+")", problemAreaX1-10, 345);
-			g.drawString("("+point2X+","+point2Y+")", (problemAreaX2-problemAreaX1)/2+problemAreaX1, 355-20*point2Y-10);
+			
+			if(isUp)
+				g.drawString("("+point2X+","+point2Y+")", (problemAreaX2-problemAreaX1)/2+problemAreaX1, 355-20*point2Y-10);
+			else
+				g.drawString("("+point2X+","+point2Y+")", (problemAreaX2-problemAreaX1)/2+problemAreaX1, 355-7*point2Y+30);
 			
 			if(difLevel==1 || difLevel==4)
 				g.drawString("("+point3X+","+point3Y+")", problemAreaX2, 345);
 		}
 		else
 		{
-			g.drawArc(problemAreaX1, 360-20*point2Y, problemAreaX2-problemAreaX1, 40*point2Y, 0, 180);
+			if(isUp)
+				g.drawArc(problemAreaX1, 360-20*point2Y, problemAreaX2-problemAreaX1, 40*point2Y, 0, 180);
+			else
+				g.drawArc(problemAreaX1, 360-7*point2Y, problemAreaX2-problemAreaX1, 14*point2Y, 0, 180);
 		}
 	}
 
